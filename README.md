@@ -75,6 +75,15 @@ This project aims to analyze the relationship between students’ daily habits a
 - Libraries: tidyverse, infer, ggplot2
 - Techniques: regression analysis, statistical inference, data cleaning, visualization
 
+## 📚 References
+
+For more detailed explanations and examples of the methods used in this project, please refer to the following chapters from the ModernDive online textbook:
+
+- 📖 Chapter 5: Simple Linear Regression — https://moderndive.com/5-regression.html  
+- 📖 Chapter 6: Multiple Regression — https://moderndive.com/6-multiple-regression.html  
+- 📖 Chapter 9: Hypothesis Testing — https://moderndive.com/9-hypothesis-testing.html
+
 ## 📄 License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
+
