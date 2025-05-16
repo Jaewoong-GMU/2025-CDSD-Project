@@ -1,0 +1,102 @@
+---
+title: "할수 있는거 예시"
+author: ""
+date: "2025-05-14"
+output:
+  pdf_document:
+    toc: true          
+    number_sections: true  
+    fig_caption: true  
+    df_print: kable    
+    latex_engine: xelatex  
+mainfont: "맑은 고딕"   
+fontsize: 11pt
+geometry: margin=1in
+---
+```{r setup, include = FALSE}
+library(tidyverse)
+library(modelr)
+library(boot)
+library(infer)
+library(HistData)
+```
+
+
+```{r}
+student_habits_performance <- read.csv("student_habits_performance.csv")
+```
+
+
+
+#### 1. Visualization data
+
+### example code
+
+### scatter plot
+### Relationship between Study Time and Exam Score
+
+
+```{r}
+student_habits_performance %>% ggplot() +
+  geom_point(aes(x = study_hours_per_day, y = exam_score))
+```
+
+
+
+### Histogram
+### Distribution of Sleep Time
+
+```{r}
+student_habits_performance %>% ggplot() +
+  geom_histogram(aes(x = sleep_hours), bins = 30)
+```
+
+
+
+
+
+
+#### 2. Data Wrangling
+
+- Creating new variables by using mutate
+
+
+
+#### example code
+
+```{r}
+student_habits_performance_new <- student_habits_performance %>% mutate(study_sleep_ratio = study_hours_per_day / sleep_hours)
+```
+
+
+#### 3. Data Filtering
+
+### example code
+
+```{r}
+head(student_habits_performance %>% filter(sleep_hours >= 8, exam_score >= 90)) %>% 
+  select(age, study_hours_per_day, sleep_hours, exam_score)
+```
+
+
+#### 4. inference
+
+#### Example
+
+- Is there an average grade difference between students with long study time
+and those with short study time?
+
+The null hypothesis (H0): There is no difference in average grade between the group with a lot of study time and the group with a little study time.
+The alternative hypothesis (H1): There is a difference in average grade between the two groups.
+
+
+
+#### 5. Linear Regression
+
+#### example
+
+공부시간이 많을수록 성적이 오를까??
+
+
+
+
