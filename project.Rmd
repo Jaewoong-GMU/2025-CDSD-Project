@@ -1,102 +1,268 @@
 ---
-title: "할수 있는거 예시"
-author: ""
-date: "2025-05-14"
+title: "2025 CDSD Project"
+author: "Jaewoong Choi, Seonghee Park, Joseph Kim"
+date: "`r Sys.Date()`"
+documentclass: article
+geometry: margin=1in
+fontsize: 11pt
 output:
   pdf_document:
-    toc: true          
-    number_sections: true  
-    fig_caption: true  
-    df_print: kable    
-    latex_engine: xelatex  
-mainfont: "맑은 고딕"   
-fontsize: 11pt
-geometry: margin=1in
+    toc: false
+    df_print: kable
+    fig_caption: false
+    number_sections: false
+    dev: pdf
+    highlight: tango
+  html_document:
+    theme: default
+    self_contained: true
+    toc: false
+    df_print: kable
+    fig_caption: false
+    number_sections: false
+    smart: true
+    dev: svg
+urlcolor: blue
 ---
+
 ```{r setup, include = FALSE}
 library(tidyverse)
-library(modelr)
-library(boot)
+library(janitor)
+library(knitr)
+library(ggplot2)
 library(infer)
-library(HistData)
+library(modelr)
 ```
 
+#### Section 1. Load and Explore the Data
 
 ```{r}
-student_habits_performance <- read.csv("student_habits_performance.csv")
+student_data <- read.csv("student_habits_performance.csv")
 ```
 
-
-
-#### 1. Visualization data
-
-### example code
-
-### scatter plot
-### Relationship between Study Time and Exam Score
-
+**View basic structure**
+```{r}
+summary(student_data)
+```
+**Categorical variable frequencies**
+```{r}
+tabyl(student_data$gender)
+```
 
 ```{r}
-student_habits_performance %>% ggplot() +
-  geom_point(aes(x = study_hours_per_day, y = exam_score))
+tabyl(student_data$part_time_job)
 ```
-
-
-
-### Histogram
-### Distribution of Sleep Time
 
 ```{r}
-student_habits_performance %>% ggplot() +
-  geom_histogram(aes(x = sleep_hours), bins = 30)
+tabyl(student_data$diet_quality)
 ```
 
-
-
-
-
-
-#### 2. Data Wrangling
-
-- Creating new variables by using mutate
-
-
-
-#### example code
+#### Section 2. Data Cleaning & Feature Engineering
 
 ```{r}
-student_habits_performance_new <- student_habits_performance %>% mutate(study_sleep_ratio = study_hours_per_day / sleep_hours)
+# Fill missing values in parental_education_level
+mode_val <- student_data %>%
+  count(parental_education_level) %>%
+  arrange(desc(n)) %>%
+  slice(1) %>%
+  pull(parental_education_level)
+
+student_data <- student_data %>%
+  mutate(parental_education_level = replace_na(parental_education_level, mode_val)) %>%
+  mutate(
+    total_screen_time = social_media_hours + netflix_hours,
+    well_being = mental_health_rating + sleep_hours
+  )
+
 ```
 
+#### Section 3. Visualizations
 
-#### 3. Data Filtering
+**Numeric variables histogram**
+```{r}
+student_data %>%
+  select(study_hours_per_day, sleep_hours, mental_health_rating, exam_score) %>%
+  pivot_longer(everything(), names_to = "var", values_to = "value") %>%
+  ggplot(aes(x = value)) +
+  geom_histogram(bins = 20, fill = "skyblue", color = "black") +
+  facet_wrap(~var, scales = "free") +
+  labs(
+    title = "Numeric Distributions",
+    x = "Value",
+    y = "Frequency"
+  )
+```
+   - This plot illustrates the distribution of four important numeric variables: study hours per day, sleep hours, mental health rating, and exam score. Most students appear to study between one and three hours per day, while sleep hours show a broader distribution. Mental health ratings tend to be concentrated at the lower end of the scale. Exam scores also vary, but many students score between 60% and 80%. These patterns help us understand how the data is spread and whether there are any outliers or unusual patterns to consider before modeling.
+   
+**Categorical variables bar plots**
+```{r}
+student_data %>%
+  select(gender, part_time_job, diet_quality, internet_quality) %>%
+  pivot_longer(everything(), names_to = "variable", values_to = "value") %>%
+  ggplot(aes(x = value)) +
+  geom_bar(fill = "lightblue", color = "black") +
+  facet_wrap(~variable, scales = "free") +
+  labs(
+    title = "Categorical Distributions",
+    x = "Category",
+    y = "Count"
+  )
+```
 
-### example code
+   - This set of bar plots shows how often each category appears within selected variables: gender, part-time job status, diet quality, and internet quality. The majority of students identify as female, and most do not have part-time jobs. The most common diet quality rating is “Fair,” and most students report having “Good” or “Average” internet quality. These visualizations help us understand group sizes and provide context for group comparisons such as t-tests and regression coefficients.
+   
+#### Section 4. Regression Analysis
 
 ```{r}
-head(student_habits_performance %>% filter(sleep_hours >= 8, exam_score >= 90)) %>% 
-  select(age, study_hours_per_day, sleep_hours, exam_score)
+model_simple <- lm(exam_score ~ study_hours_per_day, data = student_data)
+summary(model_simple)
 ```
 
+```{r}
+ggplot(student_data, aes(x = study_hours_per_day, y = exam_score)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "blue") +
+  labs(
+    title = "Study Hours vs Exam Score",
+    x = "Study Hours per Day",
+    y = "Exam Score (%)"
+  )
+```
 
-#### 4. inference
+   - This scatter plot includes a regression line showing the relationship between daily study hours and final exam scores. As study time increases, exam scores also tend to rise, suggesting a positive linear relationship. However, the points are not perfectly aligned with the line, meaning other factors also influence exam results. This visual supports the finding that more study time generally leads to better performance.
+   
+#### Section 5. Multiple Linear Regression
 
-#### Example
+```{r}
+model_multi <- lm(exam_score ~ study_hours_per_day + sleep_hours +     attendance_percentage + mental_health_rating + 
+                    total_screen_time, data = student_data)
+summary(model_multi)
+```
 
-- Is there an average grade difference between students with long study time
-and those with short study time?
+#### Section 6: Train/Test Split and Model Evaluation
 
-The null hypothesis (H0): There is no difference in average grade between the group with a lot of study time and the group with a little study time.
-The alternative hypothesis (H1): There is a difference in average grade between the two groups.
+```{r}
+# Set seed for reproducibility
+set.seed(1234)
 
+# Determine the number of rows for training data (80%)
+n <- nrow(student_data)
+train_index <- sample(1:n, size = 0.8 * n)
 
+# Split into train and test datasets
+train_data <- student_data[train_index, ]
+test_data  <- student_data[-train_index, ]
 
-#### 5. Linear Regression
+# Write to CSV files
+write.csv(train_data, "train_student_data.csv", row.names = FALSE)
+write.csv(test_data,  "test_student_data.csv", row.names = FALSE)
 
-#### example
+```
 
-공부시간이 많을수록 성적이 오를까??
+```{r}
+# Create derived variable BEFORE model fitting
+train_data <- train_data %>%
+  mutate(total_screen_time = social_media_hours + netflix_hours)
 
+test_data <- test_data %>%
+  mutate(total_screen_time = social_media_hours + netflix_hours)
+```
 
+```{r}
+# Fit a multiple linear regression model using the training set
+model_multi <- lm(exam_score ~ study_hours_per_day + sleep_hours + 
+                    attendance_percentage + mental_health_rating + 
+                    total_screen_time,data = train_data
+    )
+```
 
+```{r}
+# Calculate RMSE on the training data
+rmse(model_multi, train_data)
+```
 
+```{r}
+# Calculate RMSE on the test data
+rmse(model_multi, test_data)
+```
+
+```{r}
+# Visualize predicted vs actual exam scores on test data
+test_data %>%
+  add_predictions(model_multi) %>%
+  ggplot(aes(x = pred, y = exam_score)) +
+  geom_point(alpha = 0.5) +
+  geom_abline(slope = 1, intercept = 0, color = "red", linetype = "dashed") +
+  labs(
+    title = "Predicted vs Actual Exam Scores",
+    x = "Predicted Exam Score",
+    y = "Actual Exam Score"
+  )
+```
+
+##### Section 7. Hypothesis Test: Part-time Job vs Exam Score
+
+```{r}
+student_data %>%
+  t_test(exam_score ~ part_time_job, order = c("Yes", "No"))
+```
+
+#### Section 8. Inference for Regression
+
+```{r}
+model <- lm(exam_score ~ study_hours_per_day, data = student_data)
+summary(model)
+```
+
+```{r}
+student_data <- student_data %>%
+  mutate(
+    fitted = predict(model),
+    residuals = exam_score - fitted
+  )
+```
+
+```{r}
+ggplot(student_data, aes(x = fitted, y = residuals)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(
+    title = "Residuals vs Fitted Values",
+    x = "Fitted Values",
+    y = "Residuals"
+  )
+```
+
+   - The residual plot displays the difference between the actual and predicted exam scores from the regression model. Residuals appear randomly scattered around zero, which is a good sign. It suggests that the model does not systematically over- or under-predict for any range of fitted values. This supports the assumption of linearity and constant variance (homoscedasticity) in the regression model and indicates that our model is likely a reasonable fit for the data.
+   
+#### 9. Conclusion
+
+   - This study explored how various daily habits relate to students’ academic performance using the "Student Habits vs Academic Performance" dataset. Through exploratory data analysis, regression modeling, and hypothesis testing, we identified several key insights:
+
+**1.Study Time Matters**
+
+   - The strongest positive relationship observed was between study_hours_per_day and exam_score. Both the simple and multiple regression models showed that, on average, students who studied more tended to perform better on exams. However, the returns appeared to be diminishing after a certain number of hours, suggesting that excessive studying may not always lead to proportionately higher scores.
+
+**2. Sleep and Mental Health Are Crucial**
+
+   - Sleep_hours and mental_health_rating were both positively associated with exam_score. This supports the hypothesis that cognitive performance is linked not only to academic effort but also to personal well-being. Students who maintained adequate sleep and reported better mental health tended to achieve higher exam results.
+
+**3. Screen Time Has Mixed Effects**
+
+   - The combined variable total_screen_time (social_media + Netflix) showed a weak negative correlation with exam_score. While some screen time may be harmless or even relaxing, high levels of usage may reduce productive time for studying or resting. This highlights the need for balanced media consumption.
+
+**4. Part-Time Job Impact**
+
+   - A two-sample t-test revealed a statistically significant difference in exam scores between students with and without part-time jobs. On average, students without part-time jobs scored slightly higher. This suggests that time and energy spent working may limit academic performance, although other factors like motivation or time management may also play a role.
+
+**5. Multiple Factors Together Improve Prediction**
+
+   - The multiple linear regression model including study hours, sleep, attendance, mental health, and screen time explained a large portion of the variance in exam scores R-squared (R^2) approximately 0.90. This confirms that no single variable determines academic performance; rather, it is influenced by a combination of behavioral, lifestyle, and environmental factors.
+
+**6. Limitations**
+
+   - The dataset is synthetic and may not reflect real-world complexity.
+
+   - All variables are self-reported, which may introduce bias.
+
+   - The models assume linearity and independence, which may not fully capture interaction effects or nonlinear relationships.
