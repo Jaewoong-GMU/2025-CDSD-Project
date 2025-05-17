@@ -150,6 +150,17 @@ t = (x̄₁ - x̄₂) / sqrt( (s₁² / n₁) + (s₂² / n₂) )
 
 ---
 
+## 🧾 Conclusion
+This project demonstrates that daily habits have a measurable impact on students’ academic performance. Our findings show that students who study more, sleep well, attend class regularly, and report better mental health tend to score higher on exams. In contrast, excessive screen time has a modest negative effect.
+
+The multiple regression model with an R² of 0.87 highlights that no single habit determines success. Instead, academic outcomes are shaped by a combination of behavioral and lifestyle factors.
+
+Our t-test showed no statistically significant difference in exam performance between students with and without part-time jobs, suggesting that work status alone does not greatly influence academic results.
+
+This project helped us apply the full data science process from cleaning and exploring data to modeling and inference. These insights may support both students and educators in promoting healthier and more balanced academic routines.
+
+---
+
 ## 🛠️ Tools & Technologies
 
 - **Language**: R  
@@ -169,14 +180,6 @@ t = (x̄₁ - x̄₂) / sqrt( (s₁² / n₁) + (s₂² / n₂) )
 ## 📄 License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
-
----
-🧾 Conclusion
-This project highlights the strong relationship between student habits and academic performance. Our analysis found that study time, sleep, attendance, and mental health were all positively associated with higher exam scores, while screen time showed a negative effect. The multiple regression model, with an R² of 0.87, demonstrated high predictive power, suggesting that lifestyle factors meaningfully impact academic outcomes.
-
-Additionally, our hypothesis test found no significant difference in exam scores between students with and without part-time jobs, indicating that employment alone may not be a critical factor in performance.
-
-Through this project, we practiced real-world data science workflows using R—cleaning, modeling, visualizing, and interpreting data to draw meaningful conclusions. These insights may help educators and students better understand the importance of balanced habits in achieving academic success.
 
 ---
 
