@@ -14,7 +14,7 @@ This project analyzes the relationship between students’ daily habits and thei
 
 ## 📂 Dataset Information
 
-- **Source**: [Kaggle - Student Habits vs Academic Performance](https://www.kaggle.com/datasets/jayaantanaath/student-habits-vs-academic-performance)
+- **Source**: [**Click here to view the full report**](https://github.com/Jaewoong-GMU/2025-CDSD-Project/raw/main/project.pdf)
 - **Description**: A synthetic dataset of 1,000 students including lifestyle, well-being, and academic metrics.
 
 ### 🔑 Key Variables
