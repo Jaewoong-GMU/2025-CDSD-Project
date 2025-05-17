@@ -169,3 +169,13 @@ t = (x̄₁ - x̄₂) / sqrt( (s₁² / n₁) + (s₂² / n₂) )
 ## 📄 License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+---
+🧾 Conclusion
+This project highlights the strong relationship between student habits and academic performance. Our analysis found that study time, sleep, attendance, and mental health were all positively associated with higher exam scores, while screen time showed a negative effect. The multiple regression model, with an R² of 0.87, demonstrated high predictive power, suggesting that lifestyle factors meaningfully impact academic outcomes.
+
+Additionally, our hypothesis test found no significant difference in exam scores between students with and without part-time jobs, indicating that employment alone may not be a critical factor in performance.
+
+Through this project, we practiced real-world data science workflows using R—cleaning, modeling, visualizing, and interpreting data to draw meaningful conclusions. These insights may help educators and students better understand the importance of balanced habits in achieving academic success.
+
+---
