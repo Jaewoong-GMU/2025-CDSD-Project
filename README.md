@@ -180,4 +180,4 @@ Through this project, we practiced real-world data science workflows using R—c
 
 ---
 
-👉 [**Click to View the Full Report**]([https://github.com/jaewoongchoi/student-habits-project/blob/main/](https://github.com/Jaewoong-GMU/2025-CDSD-Project/project.pdf)
+👉 [**Click to View the Full Report**](https://github.com/Jaewoong-GMU/2025-CDSD-Project/raw/main/project.pdf)
