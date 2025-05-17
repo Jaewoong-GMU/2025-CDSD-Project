@@ -179,3 +179,5 @@ Additionally, our hypothesis test found no significant difference in exam scores
 Through this project, we practiced real-world data science workflows using R—cleaning, modeling, visualizing, and interpreting data to draw meaningful conclusions. These insights may help educators and students better understand the importance of balanced habits in achieving academic success.
 
 ---
+
+👉 [**Click to View the Full Report**](https://github.com/jaewoongchoi/student-habits-project/blob/main/project.pdf)
