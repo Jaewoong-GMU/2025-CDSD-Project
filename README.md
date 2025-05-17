@@ -44,105 +44,119 @@ This project analyzes the relationship between students’ daily habits and thei
 
 ---
 
-## 📈 Methods Used
+## 📈 Methods and What We Found
 
 ### ✅ Data Cleaning & Feature Engineering
-**Purpose**: Prepare the data for analysis by handling missing values and creating useful new variables.  
+**Purpose**: Prepare the data by handling missing values and creating useful new variables.  
 **What We Did**:
 - Filled missing values in `parental_education_level` using the mode
-- Created two new variables:
+- Created:
   - `total_screen_time` = `social_media_hours` + `netflix_hours`
   - `well_being` = `sleep_hours` + `mental_health_rating`
 
 **What We Found**:
-- The newly created variables made it easier to analyze the combined impact of screen time and personal wellness on academic performance.
-- There were missing values mostly in categorical variables like parental education, which we resolved without removing data.
+- New variables helped model combined effects.
+- Minimal data was lost thanks to proper imputation.
 
 ---
 
 ### 📊 Exploratory Data Analysis
-**Purpose**: Understand the shape, distribution, and group-level patterns in the data.  
+**Purpose**: Explore distributions and group-level patterns.  
 **What We Did**:
-- Created histograms for numeric variables
-- Created bar plots for categorical variables
-- Checked for skewness, outliers, and group differences
+- Histograms for numeric variables
+- Bar plots for categorical variables
+- Summary statistics and outlier checks
 
 **What We Found**:
-- Most students study 1–3 hours per day, and sleep between 6–8 hours.
-- Mental health ratings were mostly low (3–6), suggesting stress or academic pressure.
-- The majority of students had no part-time jobs and reported “Fair” or “Good” diet quality.
-- These visual patterns helped inform which variables might impact exam performance and justified including them in our models.
+- Most students study 1–3 hours and sleep 6–8 hours.
+- Mental health ratings mostly ranged from 3–6.
+- Most students had no part-time jobs and “Fair” diets.
 
 ---
 
 ### 📉 Regression Analysis
 
 #### 1. Simple Linear Regression  
-**Purpose**: Measure the relationship between study hours and exam scores.  
-**What We Did**:  
-- Fit a linear model: `exam_score ~ study_hours_per_day`
+**Purpose**: Understand how study hours relate to academic performance.
 
-**What We Found**:
-- A strong, statistically significant **positive correlation** between study hours and exam scores.
-- The model indicated that each additional study hour increased expected exam score by approximately a few percentage points.
-- However, the model only explained part of the variance (R² ≈ moderate), meaning other variables are also important.
+**Model Equation**:
+\[
+\hat{y} = \beta_0 + \beta_1 x
+\]
+Where \(\hat{y}\) is predicted exam score, and \(x\) is study hours per day.
 
-#### 2. Multiple Linear Regression  
-**Purpose**: Understand the combined effect of multiple variables on exam scores.  
 **What We Did**:
-- Included predictors: `study_hours_per_day`, `sleep_hours`, `attendance_percentage`, `mental_health_rating`, `total_screen_time`
+- Used `lm()` to model `exam_score ~ study_hours_per_day`
 
 **What We Found**:
-- All included variables were statistically significant.
-- **Study hours**, **attendance**, and **mental health** had strong positive effects.
-- **Total screen time** had a mild negative effect.
-- The model had a very high R² (~0.90), indicating that these variables together explain most of the variation in exam scores.
+- Intercept: **35.91**, Coefficient (study_hours): **+9.49**
+- R² ≈ **0.68**  
+- **Interpretation**: Each additional hour of study increased exam score by ~9.49 points.
+- **Residuals** showed a normal spread, supporting model assumptions.
 
 ---
 
-### 🧪 Statistical Inference
+#### 2. Multiple Linear Regression  
+**Purpose**: Account for multiple influences on exam scores.
 
-#### Two-Sample t-Test  
-**Purpose**: Test whether exam scores differ based on part-time job status.  
-**What We Did**:  
-- Conducted a t-test comparing `exam_score` between students with and without a part-time job.
+**Model Equation**:
+\[
+\hat{y} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_n x_n
+\]
+
+**Variables Used**:  
+- `study_hours_per_day`, `sleep_hours`, `attendance_percentage`, `mental_health_rating`, `total_screen_time`
 
 **What We Found**:
-- Students without part-time jobs scored **significantly higher** on average.
-- The result supports the hypothesis that part-time work may reduce academic performance, likely due to time or energy constraints.
+- Coefficients:
+  - `study_hours_per_day`: **+9.51**
+  - `sleep_hours`: **+2.05**
+  - `attendance_percentage`: **+0.14**
+  - `mental_health_rating`: **+1.95**
+  - `total_screen_time`: **–2.52**
+- R² ≈ **0.87**
+- **Interpretation**: These five predictors together explained 87% of the variance in exam scores, indicating a very strong model.
 
 ---
 
 ### ⚙️ Model Evaluation
 
-**Purpose**: Validate the regression model’s ability to predict exam scores.  
+**Purpose**: Validate model accuracy and generalizability.
+
+**Metrics Used**:
+- **RMSE**:  
+\[
+\text{RMSE} = \sqrt{\frac{1}{n} \sum (y_i - \hat{y}_i)^2}
+\]
+
 **What We Did**:
-- Split data into training (80%) and testing (20%) sets
-- Fit model on training data and calculated RMSE on both sets
-- Visualized predicted vs actual scores and residuals
+- 80/20 train-test split
+- Calculated RMSE on both sets
+
+**Results**:
+- **Train RMSE**: **6.20**
+- **Test RMSE**: **5.58**
+- **Interpretation**: Predictions were accurate within ±5.6 points on average in the test set.
+- Residual plot showed randomness, supporting linearity and homoscedasticity assumptions.
+
+---
+
+### 🧪 Statistical Inference – t-Test
+
+**Purpose**: Test if students with part-time jobs had significantly different exam scores.
+
+**Test Used**:
+\[
+t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}
+\]
+
+**What We Did**:
+- Two-sample t-test on `exam_score ~ part_time_job`
 
 **What We Found**:
-- RMSE was low and similar for both training and testing datasets, indicating a well-generalized model.
-- Residuals were randomly scattered around zero, satisfying linearity and homoscedasticity assumptions.
-- Visual diagnostics confirmed that the multiple regression model was reliable and unbiased.
-
----
-
-## 🧠 Summary of Findings
-
-- 📚 **Studying longer** leads to higher exam scores — the strongest predictor in all models.
-- 💤 **More sleep and better mental health** are associated with better academic performance.
-- 📱 **Excessive screen time** (social + Netflix) slightly lowers exam scores.
-- 💼 **Part-time job holders** tend to score lower, statistically confirmed.
-- 📊 **Our regression model explained ~90% of exam score variation**, indicating a high level of predictive power.
-
----
-
-## 📉 Limitations
-
-- The dataset is synthetic and may not reflect real-life complexity.
-- Many variables are self-reported and may be biased or inaccurate.
-- The model assumes linearity and does not account for interaction effects or nonlinear trends.
+- **p-value ≈ 0.395** → not statistically significant
+- Mean difference ≈ –1.09
+- **Interpretation**: No evidence that part-time job status significantly affected exam scores.
 
 ---
 
@@ -150,7 +164,7 @@ This project analyzes the relationship between students’ daily habits and thei
 
 - **Language**: R  
 - **Libraries**: `tidyverse`, `ggplot2`, `infer`, `modelr`, `janitor`  
-- **Techniques**: Data wrangling, regression modeling, visualization, inference
+- **Techniques**: Data wrangling, regression modeling, hypothesis testing, visualization
 
 ---
 
@@ -165,7 +179,3 @@ This project analyzes the relationship between students’ daily habits and thei
 ## 📄 License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
-
----
-
-## 🔗 [📥 View Final Report (PDF)](./project.pdf)
