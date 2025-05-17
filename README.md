@@ -79,11 +79,9 @@ This project analyzes the relationship between students’ daily habits and thei
 #### 1. Simple Linear Regression  
 **Purpose**: Understand how study hours relate to academic performance.
 
-**Model Equation**:
-\[
-\hat{y} = \beta_0 + \beta_1 x
-\]
-Where \(\hat{y}\) is predicted exam score, and \(x\) is study hours per day.
+Model Equation: ŷ = β₀ + β₁x
+
+Where ŷ is the predicted exam score, and x is study hours per day.
 
 **What We Did**:
 - Used `lm()` to model `exam_score ~ study_hours_per_day`
@@ -99,10 +97,7 @@ Where \(\hat{y}\) is predicted exam score, and \(x\) is study hours per day.
 #### 2. Multiple Linear Regression  
 **Purpose**: Account for multiple influences on exam scores.
 
-**Model Equation**:
-\[
-\hat{y} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_n x_n
-\]
+**Model Equation**: ŷ = β₀ + β₁ × x₁ + β₂ × x₂ + ... + βₙ × xₙ
 
 **Variables Used**:  
 - `study_hours_per_day`, `sleep_hours`, `attendance_percentage`, `mental_health_rating`, `total_screen_time`
@@ -124,10 +119,7 @@ Where \(\hat{y}\) is predicted exam score, and \(x\) is study hours per day.
 **Purpose**: Validate model accuracy and generalizability.
 
 **Metrics Used**:
-- **RMSE**:  
-\[
-\text{RMSE} = \sqrt{\frac{1}{n} \sum (y_i - \hat{y}_i)^2}
-\]
+- **RMSE**: sqrt( (1/n) × Σ(yᵢ - ŷᵢ)² )
 
 **What We Did**:
 - 80/20 train-test split
@@ -146,9 +138,7 @@ Where \(\hat{y}\) is predicted exam score, and \(x\) is study hours per day.
 **Purpose**: Test if students with part-time jobs had significantly different exam scores.
 
 **Test Used**:
-\[
-t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}
-\]
+t = (x̄₁ - x̄₂) / sqrt( (s₁² / n₁) + (s₂² / n₂) )
 
 **What We Did**:
 - Two-sample t-test on `exam_score ~ part_time_job`
