@@ -20,99 +20,93 @@ This project analyzes the relationship between students’ daily habits and thei
 
 ### 🔑 Key Variables
 
-| Variable                      | Description                                         | Type        |
-|-------------------------------|-----------------------------------------------------|-------------|
-| `study_hours_per_day`         | Average daily study time (hours)                    | Numeric     |
-| `sleep_hours`                 | Average daily sleep (hours)                         | Numeric     |
-| `mental_health_rating`        | Mental health score (1–10)                          | Numeric     |
-| `exam_score`                  | Final exam score (%)                                | Numeric     |
-| `social_media_hours`          | Daily social media use (hours)                      | Numeric     |
-| `netflix_hours`               | Daily Netflix viewing (hours)                       | Numeric     |
-| `part_time_job`               | Has a part-time job (Yes/No)                        | Categorical |
-| `attendance_percentage`       | Class attendance rate (%)                           | Numeric     |
-| `diet_quality`                | Quality of diet (Poor/Fair/Good)                    | Categorical |
-| `internet_quality`            | Internet access quality (Poor/Average/Good)         | Categorical |
-| `parental_education_level`    | Highest education level of parents                  | Categorical |
+| Variable                    | Description                                      | Type        |
+|-----------------------------|--------------------------------------------------|-------------|
+| `study_hours_per_day`       | Average daily study time (hours)                 | Numeric     |
+| `sleep_hours`               | Average daily sleep (hours)                      | Numeric     |
+| `mental_health_rating`      | Mental health score (1–10)                       | Numeric     |
+| `exam_score`                | Final exam score (%)                             | Numeric     |
+| `social_media_hours`        | Daily social media use (hours)                   | Numeric     |
+| `netflix_hours`             | Daily Netflix viewing (hours)                    | Numeric     |
+| `part_time_job`             | Has a part-time job (Yes/No)                     | Categorical |
+| `attendance_percentage`     | Class attendance rate (%)                        | Numeric     |
+| `diet_quality`              | Quality of diet (Poor/Fair/Good)                 | Categorical |
+| `internet_quality`          | Internet access quality (Poor/Average/Good)      | Categorical |
+| `parental_education_level`  | Highest education level of parents               | Categorical |
 
 ---
 
 ## 🧠 Project Goals
 
-- Understand how study time, sleep, screen usage, and well-being influence academic outcomes.  
-- Use regression analysis to predict exam scores.  
-- Test hypotheses on group differences (e.g., job vs no job).  
-- Clean, visualize, and model structured data in R.  
+- Understand how study time, sleep, screen usage, and well-being influence academic outcomes  
+- Use regression analysis to predict exam scores  
+- Test hypotheses on group differences (e.g., job vs no job)  
+- Clean, visualize, and model structured data in R  
 
 ---
 
 ## 📈 Methods and What We Found
 
 ### ✅ Data Cleaning & Feature Engineering
-**Purpose**: Prepare the data by handling missing values and creating useful new variables.
 
-**What We Did**:
 - Filled missing values in `parental_education_level` using the mode  
-- Created two new variables:
-  - `total_screen_time`: The sum of `social_media_hours` and `netflix_hours`, representing overall recreational screen usage
-  - `well_being`: The sum of `sleep_hours` and `mental_health_rating`, as a proxy for holistic wellness
-
-**What We Found**:
-- These composite variables helped assess combined effects of lifestyle factors
-- Minimal data loss due to smart imputation strategies
+- Created new variables:  
+  - `total_screen_time` = `social_media_hours` + `netflix_hours`  
+  - `well_being` = `sleep_hours` + `mental_health_rating`  
 
 ---
 
-### 📊 Exploratory Data Analysis
-**Purpose**: Explore distributions and group-level patterns.
+## 📊 Exploratory Data Analysis
 
 **What We Did**:
 - Histograms for numeric variables  
 - Bar plots for categorical variables  
-- Summary statistics and outlier checks
 
-**What We Found**:
-- Most students study 1–3 hours and sleep 6–8 hours  
-- Mental health ratings mostly ranged from 3 to 6  
-- Majority did not have part-time jobs; most had “Fair” diet quality  
+### 📷 Numeric Variable Distributions  
+![Numeric Distributions](numeric_distributions.png)  
+*This histogram set shows how exam scores, sleep hours, mental health ratings, and study hours are distributed.*
 
----
-
-### 📉 Regression Analysis
-
-#### 1. Simple Linear Regression  
-**Purpose**: Understand how study hours relate to academic performance.
-
-**Model**:  
-\[
-\hat{y} = \beta_0 + \beta_1 x
-\]  
-Where \(\hat{y}\) is the predicted exam score, and \(x\) is `study_hours_per_day`
-
-**What We Did**:
-- Used `lm()` to model `exam_score ~ study_hours_per_day`
-
-**What We Found**:
-- Intercept: **35.91**, Coefficient: **+9.49**  
-- R² ≈ **0.68**
-
-**Interpretation**:
-- For each additional hour of daily study, students scored **about 9.49 points higher** on average.
-- Residuals were normally distributed, supporting linear model assumptions.
+### 📷 Categorical Variable Distributions  
+![Categorical Distributions](categorical_distributions.png)  
+*This bar chart shows frequencies for part-time job status, diet quality, and internet quality.*
 
 ---
 
-#### 2. Multiple Linear Regression  
-**Purpose**: Account for multiple influences on exam scores.
+## 📉 Regression Analysis
 
-**Model**:  
-\[
-\hat{y} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_n x_n
-\]
+### 1. Simple Linear Regression
+
+**Model**:
+```
+ŷ = β₀ + β₁x
+```
+Where `x` is `study_hours_per_day`, and `ŷ` is the predicted exam score.
+
+**Results**:
+- Intercept: 35.91  
+- Coefficient: +9.49  
+- R² ≈ 0.68  
+
+**Interpretation**:  
+Each additional study hour is associated with ~9.49 point increase in exam score.
+
+### 📷 Study Hours vs Exam Score  
+![Study Hours vs Exam Score](study_vs_exam.png)
+
+---
+
+### 2. Multiple Linear Regression
+
+**Model**:
+```
+ŷ = β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ
+```
 
 **Variables Used**:  
 - `study_hours_per_day`, `sleep_hours`, `attendance_percentage`, `mental_health_rating`, `total_screen_time`
 
-**What We Found**:
+**Results**:
+
 | Predictor               | Coefficient |
 |-------------------------|-------------|
 | `study_hours_per_day`   | +9.51       |
@@ -121,70 +115,55 @@ Where \(\hat{y}\) is the predicted exam score, and \(x\) is `study_hours_per_day
 | `mental_health_rating`  | +1.95       |
 | `total_screen_time`     | –2.52       |
 
-- R² ≈ **0.87**
+- R² ≈ 0.87  
 
-**Interpretation**:
-- The model explains **87% of the variance** in exam scores.
-- Study hours had the strongest positive effect, while screen time showed a mild negative impact.
-
----
-
-### ⚙️ Model Evaluation
-
-**Purpose**: Test model performance and generalization.
-
-**Metrics Used**:
-\[
-\text{RMSE} = \sqrt{ \frac{1}{n} \sum (y_i - \hat{y}_i)^2 }
-\]
-
-**What We Did**:
-- Split the data into 80% training and 20% testing
-- Calculated RMSE for both sets
-
-**Results**:
-- **Train RMSE**: 6.20  
-- **Test RMSE**: 5.58  
-
-**Interpretation**:
-- The model makes predictions within **±5.6 points** on average for unseen data.
-- Residuals were randomly distributed, supporting linearity and constant variance.
+**Interpretation**:  
+Multiple lifestyle factors jointly explain 87% of exam score variance.
 
 ---
 
-### 🧪 Statistical Inference – t-Test
+## ⚙️ Model Evaluation
 
-**Purpose**: Examine if having a part-time job significantly affects exam performance.
-
-**What We Did**:
-- Two-sample t-test: `exam_score ~ part_time_job`
+**Metric**:
+```
+RMSE = sqrt((1/n) × Σ(yᵢ - ŷᵢ)²)
+```
 
 **Results**:
-- **p-value ≈ 0.395** → Not statistically significant  
-- Mean difference: ≈ –1.09  
+- Train RMSE: 6.20  
+- Test RMSE: 5.58  
 
-**Interpretation**:
-- No evidence of a significant difference in exam scores between students with and without part-time jobs.
+**Interpretation**:  
+Predictions are accurate within ±5.6 points on the test set.
 
-**💡 Visualization Suggestion**:
-- Include a **boxplot** comparing exam scores by part-time job status for clearer communication.
+### 📷 Predicted vs Actual Exam Scores  
+![Predicted vs Actual](predicted_vs_actual.png)
+
+### 📷 Residuals vs Fitted Values  
+![Residuals vs Fitted](residuals_vs_fitted.png)
+
+---
+
+## 🧪 Statistical Inference – t-Test
+
+**What We Did**:
+- Conducted a two-sample t-test on `exam_score ~ part_time_job`
+
+**Results**:
+- p-value ≈ 0.395  
+- Mean difference: –1.09  
+
+**Interpretation**:  
+No significant difference in scores between students with or without part-time jobs.
 
 ---
 
 ## 🧾 Conclusion
 
-Our analysis reveals that **daily habits significantly influence academic performance**:
-
-- 📚 **Study time** had the greatest impact on exam scores
-- 💤 **Sleep** and 🧠 **mental health** positively contributed to performance
-- 📱 **Excessive screen time** showed a modest negative effect
-- 👷 **Part-time job status** did not significantly affect outcomes
-
-📌 **Key Takeaways for Students**:
-- Increase study time and maintain good sleep habits
-- Monitor screen use to avoid overexposure
-- Mental well-being matters—take care of it!
-- Don’t worry too much about working part-time—focus on balance
+📚 **Study time** had the strongest positive effect  
+🧠 **Mental health** and 💤 **sleep** boosted scores  
+📱 **Excessive screen time** lowered performance slightly  
+👷 **Part-time work** had no significant effect
 
 ---
 
