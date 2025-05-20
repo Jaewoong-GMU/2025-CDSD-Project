@@ -2,7 +2,7 @@
 
 **Authors**: Jaewoong Choi, Seonghee Park, Joseph Kim  
 **Course**: CDS 102 – Introduction to Data Science  
-**Date**: 2025  
+**Date**: 2025/05/20
 
 ---
 
@@ -14,7 +14,8 @@ This project analyzes the relationship between students’ daily habits and thei
 
 ## 📂 Dataset Information
 
-- **Source**: [**Click here to view the full report**](https://github.com/Jaewoong-GMU/2025-CDSD-Project/raw/main/project.pdf)
+- **Source**: [Kaggle – Student Habits vs Academic Performance Dataset](https://www.kaggle.com/datasets/jayaantanaath/student-habits-vs-academic-performance)  
+- **Full Report**: [**Click here to view the full report**](https://github.com/Jaewoong-GMU/2025-CDSD-Project/raw/main/project.pdf)  
 - **Description**: A synthetic dataset of 1,000 students including lifestyle, well-being, and academic metrics.
 
 ### 🔑 Key Variables
