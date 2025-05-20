@@ -64,11 +64,11 @@ This project analyzes the relationship between students’ daily habits and thei
 
 ### 📷 Numeric Variable Distributions  
 ![Numeric Distributions](CDSD_Project_Images/numeric_distributions.png)  
-*This histogram set shows how exam scores, sleep hours, mental health ratings, and study hours are distributed.*
+*This set of histograms displays how students are distributed across study time, sleep, mental health, and exam scores. Most students study 1–3 hours and sleep 6–8 hours per day.*
 
-### 📷 Categorical Variable Distributions  
 ![Categorical Distributions](CDSD_Project_Images/categorical_distributions.png)  
-*This bar chart shows frequencies for part-time job status, diet quality, and internet quality.*
+*These bar charts show how categorical variables like part-time job, diet quality, and internet access are distributed. Most students do not work part-time and report having "Fair" diets.*
+
 
 ---
 
@@ -91,7 +91,8 @@ Where `x` is `study_hours_per_day`, and `ŷ` is the predicted exam score.
 Each additional study hour is associated with ~9.49 point increase in exam score.
 
 ### 📷 Study Hours vs Exam Score  
-![Study Hours vs Exam Score](CDSD_Project_Images/study_vs_exam.png)
+![Study Hours vs Exam Score](CDSD_Project_Images/study_vs_exam.png)  
+*Scatter plot showing that increased study time correlates strongly with higher exam scores. The regression line confirms a positive linear relationship.*
 
 ---
 
@@ -137,10 +138,11 @@ RMSE = sqrt((1/n) × Σ(yᵢ - ŷᵢ)²)
 Predictions are accurate within ±5.6 points on the test set.
 
 ### 📷 Predicted vs Actual Exam Scores  
-![Predicted vs Actual](CDSD_Project_Images/predicted_vs_actual.png)
+![Predicted vs Actual](CDSD_Project_Images/predicted_vs_actual.png)  
+*This plot shows the predicted exam scores versus actual scores. Most points are close to the diagonal, indicating accurate model predictions.*
 
-### 📷 Residuals vs Fitted Values  
-![Residuals vs Fitted](CDSD_Project_Images/residuals_vs_fitted.png)
+![Residuals vs Fitted](CDSD_Project_Images/residuals_vs_fitted.png)  
+*This plot checks model assumptions. Residuals appear randomly scattered, supporting linearity and constant variance.*
 
 ---
 
