@@ -1,8 +1,8 @@
 # 📘 2025 CDSD Project: Student Habits and Academic Performance
 
-**Authors**: Jaewoong Choi, Seonghee Park, Joseph Kim  
+**Authors**: Jaewoong Choi, Seonghee Park, Joseph Kim, Hyunha Noh  
 **Course**: CDS 102 – Introduction to Data Science  
-**Date**: 2025/05/20
+**Date**: 2025/05/20  
 
 ---
 
@@ -38,40 +38,42 @@ This project analyzes the relationship between students’ daily habits and thei
 
 ## 🧠 Project Goals
 
-- Understand how study time, sleep, screen usage, and well-being influence academic outcomes.
-- Use regression analysis to predict exam scores.
-- Test hypotheses on group differences (e.g., job vs no job).
-- Clean, visualize, and model structured data in R.
+- Understand how study time, sleep, screen usage, and well-being influence academic outcomes.  
+- Use regression analysis to predict exam scores.  
+- Test hypotheses on group differences (e.g., job vs no job).  
+- Clean, visualize, and model structured data in R.  
 
 ---
 
 ## 📈 Methods and What We Found
 
 ### ✅ Data Cleaning & Feature Engineering
-**Purpose**: Prepare the data by handling missing values and creating useful new variables.  
+**Purpose**: Prepare the data by handling missing values and creating useful new variables.
+
 **What We Did**:
-- Filled missing values in `parental_education_level` using the mode
-- Created:
-  - `total_screen_time` = `social_media_hours` + `netflix_hours`
-  - `well_being` = `sleep_hours` + `mental_health_rating`
+- Filled missing values in `parental_education_level` using the mode  
+- Created two new variables:
+  - `total_screen_time`: The sum of `social_media_hours` and `netflix_hours`, representing overall recreational screen usage
+  - `well_being`: The sum of `sleep_hours` and `mental_health_rating`, as a proxy for holistic wellness
 
 **What We Found**:
-- New variables helped model combined effects.
-- Minimal data was lost thanks to proper imputation.
+- These composite variables helped assess combined effects of lifestyle factors
+- Minimal data loss due to smart imputation strategies
 
 ---
 
 ### 📊 Exploratory Data Analysis
-**Purpose**: Explore distributions and group-level patterns.  
+**Purpose**: Explore distributions and group-level patterns.
+
 **What We Did**:
-- Histograms for numeric variables
-- Bar plots for categorical variables
+- Histograms for numeric variables  
+- Bar plots for categorical variables  
 - Summary statistics and outlier checks
 
 **What We Found**:
-- Most students study 1–3 hours and sleep 6–8 hours.
-- Mental health ratings mostly ranged from 3–6.
-- Most students had no part-time jobs and “Fair” diets.
+- Most students study 1–3 hours and sleep 6–8 hours  
+- Mental health ratings mostly ranged from 3 to 6  
+- Majority did not have part-time jobs; most had “Fair” diet quality  
 
 ---
 
@@ -80,85 +82,109 @@ This project analyzes the relationship between students’ daily habits and thei
 #### 1. Simple Linear Regression  
 **Purpose**: Understand how study hours relate to academic performance.
 
-Model Equation: ŷ = β₀ + β₁x
-
-Where ŷ is the predicted exam score, and x is study hours per day.
+**Model**:  
+\[
+\hat{y} = \beta_0 + \beta_1 x
+\]  
+Where \(\hat{y}\) is the predicted exam score, and \(x\) is `study_hours_per_day`
 
 **What We Did**:
 - Used `lm()` to model `exam_score ~ study_hours_per_day`
 
 **What We Found**:
-- Intercept: **35.91**, Coefficient (study_hours): **+9.49**
-- R² ≈ **0.68**  
-- **Interpretation**: Each additional hour of study increased exam score by ~9.49 points.
-- **Residuals** showed a normal spread, supporting model assumptions.
+- Intercept: **35.91**, Coefficient: **+9.49**  
+- R² ≈ **0.68**
+
+**Interpretation**:
+- For each additional hour of daily study, students scored **about 9.49 points higher** on average.
+- Residuals were normally distributed, supporting linear model assumptions.
 
 ---
 
 #### 2. Multiple Linear Regression  
 **Purpose**: Account for multiple influences on exam scores.
 
-**Model Equation**: ŷ = β₀ + β₁ × x₁ + β₂ × x₂ + ... + βₙ × xₙ
+**Model**:  
+\[
+\hat{y} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_n x_n
+\]
 
 **Variables Used**:  
 - `study_hours_per_day`, `sleep_hours`, `attendance_percentage`, `mental_health_rating`, `total_screen_time`
 
 **What We Found**:
-- Coefficients:
-  - `study_hours_per_day`: **+9.51**
-  - `sleep_hours`: **+2.05**
-  - `attendance_percentage`: **+0.14**
-  - `mental_health_rating`: **+1.95**
-  - `total_screen_time`: **–2.52**
+| Predictor               | Coefficient |
+|-------------------------|-------------|
+| `study_hours_per_day`   | +9.51       |
+| `sleep_hours`           | +2.05       |
+| `attendance_percentage` | +0.14       |
+| `mental_health_rating`  | +1.95       |
+| `total_screen_time`     | –2.52       |
+
 - R² ≈ **0.87**
-- **Interpretation**: These five predictors together explained 87% of the variance in exam scores, indicating a very strong model.
+
+**Interpretation**:
+- The model explains **87% of the variance** in exam scores.
+- Study hours had the strongest positive effect, while screen time showed a mild negative impact.
 
 ---
 
 ### ⚙️ Model Evaluation
 
-**Purpose**: Validate model accuracy and generalizability.
+**Purpose**: Test model performance and generalization.
 
 **Metrics Used**:
-- **RMSE**: sqrt( (1/n) × Σ(yᵢ - ŷᵢ)² )
+\[
+\text{RMSE} = \sqrt{ \frac{1}{n} \sum (y_i - \hat{y}_i)^2 }
+\]
 
 **What We Did**:
-- 80/20 train-test split
-- Calculated RMSE on both sets
+- Split the data into 80% training and 20% testing
+- Calculated RMSE for both sets
 
 **Results**:
-- **Train RMSE**: **6.20**
-- **Test RMSE**: **5.58**
-- **Interpretation**: Predictions were accurate within ±5.6 points on average in the test set.
-- Residual plot showed randomness, supporting linearity and homoscedasticity assumptions.
+- **Train RMSE**: 6.20  
+- **Test RMSE**: 5.58  
+
+**Interpretation**:
+- The model makes predictions within **±5.6 points** on average for unseen data.
+- Residuals were randomly distributed, supporting linearity and constant variance.
 
 ---
 
 ### 🧪 Statistical Inference – t-Test
 
-**Purpose**: Test if students with part-time jobs had significantly different exam scores.
-
-**Test Used**:
-t = (x̄₁ - x̄₂) / sqrt( (s₁² / n₁) + (s₂² / n₂) )
+**Purpose**: Examine if having a part-time job significantly affects exam performance.
 
 **What We Did**:
-- Two-sample t-test on `exam_score ~ part_time_job`
+- Two-sample t-test: `exam_score ~ part_time_job`
 
-**What We Found**:
-- **p-value ≈ 0.395** → not statistically significant
-- Mean difference ≈ –1.09
-- **Interpretation**: No evidence that part-time job status significantly affected exam scores.
+**Results**:
+- **p-value ≈ 0.395** → Not statistically significant  
+- Mean difference: ≈ –1.09  
+
+**Interpretation**:
+- No evidence of a significant difference in exam scores between students with and without part-time jobs.
+
+**💡 Visualization Suggestion**:
+- Include a **boxplot** comparing exam scores by part-time job status for clearer communication.
 
 ---
 
 ## 🧾 Conclusion
-This project demonstrates that daily habits have a measurable impact on students’ academic performance. Our findings show that students who study more, sleep well, attend class regularly, and report better mental health tend to score higher on exams. In contrast, excessive screen time has a modest negative effect.
 
-The multiple regression model with an R² of 0.87 highlights that no single habit determines success. Instead, academic outcomes are shaped by a combination of behavioral and lifestyle factors.
+Our analysis reveals that **daily habits significantly influence academic performance**:
 
-Our t-test showed no statistically significant difference in exam performance between students with and without part-time jobs, suggesting that work status alone does not greatly influence academic results.
+- 📚 **Study time** had the greatest impact on exam scores
+- 💤 **Sleep** and 🧠 **mental health** positively contributed to performance
+- 📱 **Excessive screen time** showed a modest negative effect
+- 👷 **Part-time job status** did not significantly affect outcomes
 
-This project helped us apply the full data science process from cleaning and exploring data to modeling and inference. These insights may support both students and educators in promoting healthier and more balanced academic routines.
+📌 **Key Takeaways for Students**:
+- Increase study time and maintain good sleep habits
+- Monitor screen use to avoid overexposure
+- Mental well-being matters—take care of it!
+- Don’t worry too much about working part-time—focus on balance
 
 ---
 
@@ -172,9 +198,10 @@ This project helped us apply the full data science process from cleaning and exp
 
 ## 📚 References
 
+- 📖 [Kaggle Dataset](https://www.kaggle.com/datasets/jayaantanaath/student-habits-vs-academic-performance)  
 - 📖 [ModernDive: Chapter 5 – Simple Regression](https://moderndive.com/5-regression.html)  
 - 📖 [ModernDive: Chapter 6 – Multiple Regression](https://moderndive.com/6-multiple-regression.html)  
-- 📖 [ModernDive: Chapter 9 – Hypothesis Testing](https://moderndive.com/9-hypothesis-testing.html)  
+- 📖 [ModernDive: Chapter 9 – Hypothesis Testing](https://moderndive.com/9-hypothesis-testing.html)
 
 ---
 
