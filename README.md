@@ -197,8 +197,11 @@ This result underscores the importance of evidence-based approaches to student s
 👷 **Part-time work** had no significant effect
 
 The multivariate analysis reveals that academic success is best understood as an ecosystem of interconnected behaviors and wellbeing factors rather than isolated variables. While study time stands out as the single most powerful predictor, its effect is significantly amplified when combined with adequate sleep, good mental health, and limited screen time.
+
 These findings suggest opportunities for educational interventions that target multiple factors simultaneously. For instance, campus initiatives that combine study skill workshops with sleep hygiene education and screen time management strategies might yield synergistic benefits exceeding what would be expected from addressing each factor in isolation.
+
 The lack of significant academic impact from part-time employment challenges common institutional policies that discourage working students. Instead, universities might better serve students by helping them integrate employment with academic responsibilities through more flexible scheduling, blended learning options, and targeted time management support.
+
 From a methodological perspective, the substantial improvement in explanatory power from single to multiple regression (R² from 0.68 to 0.87) demonstrates the value of comprehensive, multivariate approaches to understanding academic performance. Future research should explore additional factors and potential interaction effects that might capture the remaining 13% of unexplained variance.
 
 ---
