@@ -63,11 +63,11 @@ This project analyzes the relationship between students’ daily habits and thei
 - Bar plots for categorical variables  
 
 ### 📷 Numeric Variable Distributions  
-![Numeric Distributions](numeric_distributions.png)  
+![Numeric Distributions](CDSD_Project_Images/numeric_distributions.png)  
 *This histogram set shows how exam scores, sleep hours, mental health ratings, and study hours are distributed.*
 
 ### 📷 Categorical Variable Distributions  
-![Categorical Distributions](categorical_distributions.png)  
+![Categorical Distributions](CDSD_Project_Images/categorical_distributions.png)  
 *This bar chart shows frequencies for part-time job status, diet quality, and internet quality.*
 
 ---
@@ -91,7 +91,7 @@ Where `x` is `study_hours_per_day`, and `ŷ` is the predicted exam score.
 Each additional study hour is associated with ~9.49 point increase in exam score.
 
 ### 📷 Study Hours vs Exam Score  
-![Study Hours vs Exam Score](study_vs_exam.png)
+![Study Hours vs Exam Score](CDSD_Project_Images/study_vs_exam.png)
 
 ---
 
@@ -137,10 +137,10 @@ RMSE = sqrt((1/n) × Σ(yᵢ - ŷᵢ)²)
 Predictions are accurate within ±5.6 points on the test set.
 
 ### 📷 Predicted vs Actual Exam Scores  
-![Predicted vs Actual](predicted_vs_actual.png)
+![Predicted vs Actual](CDSD_Project_Images/predicted_vs_actual.png)
 
 ### 📷 Residuals vs Fitted Values  
-![Residuals vs Fitted](residuals_vs_fitted.png)
+![Residuals vs Fitted](CDSD_Project_Images/residuals_vs_fitted.png)
 
 ---
 
